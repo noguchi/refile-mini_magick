@@ -123,6 +123,9 @@ module Refile
     def call(file, *args, format: nil, &block)
       file = processor.convert!(file, format) if format
       file = processor.auto_orient!(file)
+      file = processor.with_minimagick(file) do |img|
+        img.strip
+      end
       send(@method, file, *args, &block)
     end
 
